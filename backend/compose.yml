@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: brecho
+      POSTGRES_USER: brecho
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Defina DB_PASSWORD no arquivo .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - brecho-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U brecho -d brecho"]
+      interval: 5s
+      retries: 10
+volumes:
+  brecho-data:

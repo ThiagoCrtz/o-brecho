@@ -1,0 +1,2027 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "O-BRECHÓ API",
+    "version": "1.0.0",
+    "description": "Veja README.md para permissões. IDs de triagem são IDs de produto. Corpo máximo 64 KiB."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Disponibilidade do processo",
+        "operationId": "gethealth",
+        "responses": {
+          "200": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Iniciar sessão",
+        "operationId": "postapiauthlogin",
+        "responses": {
+          "200": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "summary": "Conta autenticada",
+        "operationId": "getapiauthme",
+        "responses": {
+          "200": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Actor"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "summary": "Encerrar sessão",
+        "operationId": "postapiauthlogout",
+        "responses": {
+          "204": {
+            "description": "Concluído, sem corpo."
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/equipe": {
+      "get": {
+        "summary": "Consultar equipe",
+        "operationId": "getapiequipe",
+        "responses": {
+          "200": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StaffView"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "tamanho",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Cadastrar equipe",
+        "operationId": "postapiequipe",
+        "responses": {
+          "201": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Created"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStaff"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clientes": {
+      "get": {
+        "summary": "Consultar clientes",
+        "operationId": "getapiclientes",
+        "responses": {
+          "200": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerView"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "tamanho",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Cadastrar clientes",
+        "operationId": "postapiclientes",
+        "responses": {
+          "201": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Created"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Customer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categorias": {
+      "get": {
+        "summary": "Consultar categorias",
+        "operationId": "getapicategorias",
+        "responses": {
+          "200": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryView"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": []
+      },
+      "post": {
+        "summary": "Cadastrar categorias",
+        "operationId": "postapicategorias",
+        "responses": {
+          "201": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Created"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/doacoes": {
+      "get": {
+        "summary": "Consultar doacoes",
+        "operationId": "getapidoacoes",
+        "responses": {
+          "200": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DonationView"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "tamanho",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Cadastrar doacoes",
+        "operationId": "postapidoacoes",
+        "responses": {
+          "201": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Created"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Donation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/equipe/{id}": {
+      "put": {
+        "summary": "Alterar conta e revogar sessões (administrador)",
+        "operationId": "putapiequipeid",
+        "responses": {
+          "204": {
+            "description": "Concluído, sem corpo."
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Staff"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/equipe/{id}/senha": {
+      "post": {
+        "summary": "Redefinir senha (administrador)",
+        "operationId": "postapiequipeidsenha",
+        "responses": {
+          "204": {
+            "description": "Concluído, sem corpo."
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Password"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clientes/{id}": {
+      "put": {
+        "summary": "Editar cliente ativo",
+        "operationId": "putapiclientesid",
+        "responses": {
+          "204": {
+            "description": "Concluído, sem corpo."
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Customer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clientes/{id}/arquivar": {
+      "post": {
+        "summary": "Arquivar cliente (administrador)",
+        "operationId": "postapiclientesidarquivar",
+        "responses": {
+          "204": {
+            "description": "Concluído, sem corpo."
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/api/produtos": {
+      "get": {
+        "summary": "Consultar estoque ou triagem",
+        "operationId": "getapiprodutos",
+        "responses": {
+          "200": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductView"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "tamanho",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PENDENTE",
+                "DISPONIVEL",
+                "DESCARTADO",
+                "VENDIDO"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/triagens/{id}/aprovar": {
+      "post": {
+        "summary": "aprovar peça; id é o UUID do produto",
+        "operationId": "postapitriagensidaprovar",
+        "responses": {
+          "204": {
+            "description": "Concluído, sem corpo."
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Approve"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/triagens/{id}/descartar": {
+      "post": {
+        "summary": "descartar peça; id é o UUID do produto",
+        "operationId": "postapitriagensiddescartar",
+        "responses": {
+          "204": {
+            "description": "Concluído, sem corpo."
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Note"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/triagens/{id}/reavaliar": {
+      "post": {
+        "summary": "reavaliar peça; id é o UUID do produto",
+        "operationId": "postapitriagensidreavaliar",
+        "responses": {
+          "204": {
+            "description": "Concluído, sem corpo."
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Note"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/produtos/{id}/localizacao": {
+      "patch": {
+        "summary": "Mover peça disponível (administrador ou triagem)",
+        "operationId": "patchapiprodutosidlocalizacao",
+        "responses": {
+          "204": {
+            "description": "Concluído, sem corpo."
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Stock"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/vendas": {
+      "post": {
+        "summary": "Concluir venda (administrador ou atendente)",
+        "operationId": "postapivendas",
+        "responses": {
+          "201": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaleDetail"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Sale"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Consultar vendas e histórico",
+        "operationId": "getapivendas",
+        "responses": {
+          "200": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SaleSummary"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "inicio",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "fim",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "pagina",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "tamanho",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "name": "clienteId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/api/vendas/{id}": {
+      "get": {
+        "summary": "Detalhar venda",
+        "operationId": "getapivendasid",
+        "responses": {
+          "200": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaleDetail"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/api/relatorios": {
+      "get": {
+        "summary": "Relatório financeiro (toda a equipe)",
+        "operationId": "getapirelatorios",
+        "responses": {
+          "200": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Report"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "inicio",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "fim",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ]
+      }
+    },
+    "/api/auditoria": {
+      "get": {
+        "summary": "Auditoria (administrador)",
+        "operationId": "getapiauditoria",
+        "responses": {
+          "200": {
+            "description": "Concluído.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditView"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro. Consulte API.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "tamanho",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "Opaque session token"
+      }
+    },
+    "schemas": {
+      "Login": {
+        "type": "object",
+        "properties": {
+          "usuario": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1
+          },
+          "senha": {
+            "type": "string",
+            "maxLength": 72,
+            "minLength": 1
+          }
+        },
+        "required": [
+          "usuario",
+          "senha"
+        ],
+        "additionalProperties": false
+      },
+      "Actor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMINISTRADOR",
+              "ATENDENTE",
+              "TRIAGEM"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "role"
+        ],
+        "additionalProperties": false
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "usuario": {
+            "$ref": "#/components/schemas/Actor"
+          }
+        },
+        "required": [
+          "token",
+          "expiresAt",
+          "usuario"
+        ],
+        "additionalProperties": false
+      },
+      "Staff": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1
+          },
+          "usuario": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 3,
+            "pattern": "^[a-zA-Z0-9._-]{3,60}$"
+          },
+          "perfil": {
+            "type": "string",
+            "enum": [
+              "ADMINISTRADOR",
+              "ATENDENTE",
+              "TRIAGEM"
+            ]
+          },
+          "telefone": {
+            "type": "string",
+            "maxLength": 25
+          },
+          "ativo": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "nome",
+          "usuario",
+          "perfil",
+          "telefone",
+          "ativo"
+        ],
+        "additionalProperties": false
+      },
+      "Password": {
+        "type": "object",
+        "properties": {
+          "senha": {
+            "type": "string",
+            "maxLength": 72,
+            "minLength": 12
+          }
+        },
+        "required": [
+          "senha"
+        ],
+        "additionalProperties": false
+      },
+      "CreateStaff": {
+        "type": "object",
+        "properties": {
+          "dados": {
+            "$ref": "#/components/schemas/Staff"
+          },
+          "senha": {
+            "type": "string",
+            "maxLength": 72,
+            "minLength": 12
+          }
+        },
+        "required": [
+          "dados",
+          "senha"
+        ],
+        "additionalProperties": false
+      },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1
+          },
+          "telefone": {
+            "type": "string",
+            "maxLength": 25,
+            "minLength": 8,
+            "pattern": "^[+()0-9 .-]{8,25}$"
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "description": "E-mail válido ou texto vazio."
+          },
+          "observacoes": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "nome",
+          "telefone",
+          "email",
+          "observacoes"
+        ],
+        "additionalProperties": false
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1
+          },
+          "descricao": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "nome",
+          "descricao"
+        ],
+        "additionalProperties": false
+      },
+      "Piece": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1
+          },
+          "descricao": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "tamanho": {
+            "type": "string",
+            "maxLength": 30,
+            "minLength": 1
+          },
+          "marca": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 1
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "NOVO",
+              "BOM",
+              "REGULAR",
+              "PARA_REPARO"
+            ]
+          }
+        },
+        "required": [
+          "nome",
+          "descricao",
+          "tamanho",
+          "marca",
+          "estado"
+        ],
+        "additionalProperties": false
+      },
+      "Donation": {
+        "type": "object",
+        "properties": {
+          "origem": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1
+          },
+          "observacao": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "pecas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Piece"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "origem",
+          "observacao",
+          "pecas"
+        ],
+        "additionalProperties": false
+      },
+      "Approve": {
+        "type": "object",
+        "properties": {
+          "categoriaId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "preco": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 9999999.99,
+            "multipleOf": 0.01
+          },
+          "localizacao": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1
+          },
+          "observacao": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "categoriaId",
+          "preco",
+          "localizacao",
+          "observacao"
+        ],
+        "additionalProperties": false
+      },
+      "Note": {
+        "type": "object",
+        "properties": {
+          "observacao": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1
+          }
+        },
+        "required": [
+          "observacao"
+        ],
+        "additionalProperties": false
+      },
+      "Stock": {
+        "type": "object",
+        "properties": {
+          "localizacao": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1
+          }
+        },
+        "required": [
+          "localizacao"
+        ],
+        "additionalProperties": false
+      },
+      "Line": {
+        "type": "object",
+        "properties": {
+          "produtoId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "precoNegociado": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 9999999.99,
+            "multipleOf": 0.01
+          }
+        },
+        "required": [
+          "produtoId"
+        ],
+        "additionalProperties": false
+      },
+      "Sale": {
+        "type": "object",
+        "properties": {
+          "clienteId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "novoCliente": {
+            "$ref": "#/components/schemas/Customer"
+          },
+          "itens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Line"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          },
+          "total": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 9999999.99,
+            "multipleOf": 0.01
+          },
+          "pagamento": {
+            "type": "string",
+            "enum": [
+              "PIX",
+              "DINHEIRO",
+              "CARTAO"
+            ]
+          }
+        },
+        "required": [
+          "itens",
+          "pagamento"
+        ],
+        "additionalProperties": false,
+        "description": "Informe exatamente um de clienteId ou novoCliente. Preços e total omitidos usam os valores do banco.",
+        "oneOf": [
+          {
+            "required": [
+              "clienteId"
+            ],
+            "not": {
+              "required": [
+                "novoCliente"
+              ]
+            }
+          },
+          {
+            "required": [
+              "novoCliente"
+            ],
+            "not": {
+              "required": [
+                "clienteId"
+              ]
+            }
+          }
+        ]
+      },
+      "Created": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer"
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "detail"
+        ],
+        "additionalProperties": true
+      },
+      "StaffView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMINISTRADOR",
+              "ATENDENTE",
+              "TRIAGEM"
+            ]
+          },
+          "phone": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "username",
+          "role",
+          "phone",
+          "active"
+        ],
+        "additionalProperties": false
+      },
+      "CustomerView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "phone",
+          "email",
+          "notes",
+          "active"
+        ],
+        "additionalProperties": false
+      },
+      "CategoryView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description"
+        ],
+        "additionalProperties": false
+      },
+      "DonationView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "origin": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "received_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "received_by": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "id",
+          "origin",
+          "notes",
+          "received_at",
+          "received_by"
+        ],
+        "additionalProperties": false
+      },
+      "ProductView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "donation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "condition": {
+            "type": "string",
+            "enum": [
+              "NOVO",
+              "BOM",
+              "REGULAR",
+              "PARA_REPARO"
+            ]
+          },
+          "category_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDENTE",
+              "DISPONIVEL",
+              "DESCARTADO",
+              "VENDIDO"
+            ]
+          },
+          "location": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "donation_id",
+          "name",
+          "description",
+          "size",
+          "brand",
+          "condition",
+          "category_id",
+          "price",
+          "status",
+          "location",
+          "notes"
+        ],
+        "additionalProperties": false
+      },
+      "SaleSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "customer_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "staff_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "total": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 9999999.99,
+            "multipleOf": 0.01
+          }
+        },
+        "required": [
+          "id",
+          "customer_id",
+          "staff_id",
+          "created_at",
+          "total"
+        ],
+        "additionalProperties": false
+      },
+      "SaleItemView": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "category_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "original_price": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 9999999.99,
+            "multipleOf": 0.01
+          },
+          "unit_price": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "product_id",
+          "name",
+          "category_id",
+          "original_price",
+          "unit_price"
+        ],
+        "additionalProperties": false
+      },
+      "AuditView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actor_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "action": {
+            "type": "string"
+          },
+          "entity_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "actor_id",
+          "action",
+          "entity_id",
+          "occurred_at",
+          "detail"
+        ],
+        "additionalProperties": false
+      },
+      "Report": {
+        "type": "object",
+        "properties": {
+          "vendas": {
+            "type": "integer"
+          },
+          "recebido": {
+            "type": "number"
+          },
+          "pecas": {
+            "type": "integer"
+          },
+          "porPagamento": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "type": "string",
+                  "enum": [
+                    "PIX",
+                    "DINHEIRO",
+                    "CARTAO"
+                  ]
+                },
+                "vendas": {
+                  "type": "integer"
+                },
+                "recebido": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "method",
+                "vendas",
+                "recebido"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "porCategoria": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "pecas": {
+                  "type": "integer"
+                },
+                "recebido": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "pecas",
+                "recebido"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "vendas",
+          "recebido",
+          "pecas",
+          "porPagamento",
+          "porCategoria"
+        ],
+        "additionalProperties": false
+      },
+      "Health": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "UP"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "SaleDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "customer_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "staff_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "total": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 9999999.99,
+            "multipleOf": 0.01
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "PIX",
+              "DINHEIRO",
+              "CARTAO"
+            ]
+          },
+          "itens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SaleItemView"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "customer_id",
+          "staff_id",
+          "created_at",
+          "total",
+          "method",
+          "itens"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

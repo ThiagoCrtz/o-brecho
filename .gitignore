@@ -1,0 +1,52 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependências e Build
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
+# Referência local do template (não publicar)
+.template-reference/
+# Configuração local e segredos
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+
+# Ferramentas e arquivos de trabalho locais
+.tools/
+.work/
+Dados/
+
+# Cache local dos scripts Python
+__pycache__/
+*.pyc
+
+# Compilação Java e dados locais
+**/target/
+*.jks
+*.p12
+*.pem
+*.key
+*.dump
+*.backup

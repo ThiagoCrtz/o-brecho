@@ -1,0 +1,12 @@
+import React, { useState } from 'react'
+import { useBrecho } from '../../context/BrechoContext'
+import { formatCurrency } from '../../utils/formatters'
+
+const estados: Record<string,string>={disponivel:'Pronta para venda',aguardando_triagem:'Aguardando avaliação',vendido:'Vendida',reprovado:'Descartada'}
+export const EstoqueView: React.FC=()=>{
+  const {produtos,obterNomeCategoria,go}=useBrecho()
+  const [status,setStatus]=useState('')
+  const [busca,setBusca]=useState('')
+  const lista=produtos.filter(p=>(!status||p.status===status)&&[p.nome,p.tamanho,p.marca,p.localizacao].some(v=>v.toLowerCase().includes(busca.trim().toLowerCase())))
+  return <section className="page"><div className="page-head"><div><p className="eyebrow">DO RECEBIMENTO À VENDA</p><h1>Consultar estoque</h1><p className="lead">Veja onde cada peça está e se ela pode ser vendida.</p></div></div><div className="toolbar"><label htmlFor="estoque-busca">Procurar peça<input id="estoque-busca" type="search" placeholder="Nome, marca, tamanho ou localização" value={busca} onChange={e=>setBusca(e.target.value)}/></label><label htmlFor="estoque-status">Situação<select id="estoque-status" value={status} onChange={e=>setStatus(e.target.value)}><option value="">Todas as peças</option>{Object.entries(estados).map(([k,v])=><option key={k} value={k}>{v}</option>)}</select></label>{(busca||status)&&<button className="btn secondary" onClick={()=>{setBusca('');setStatus('')}}>Limpar busca</button>}</div><p className="note" role="status">{lista.length} peças encontradas</p><div className="table-wrap" tabIndex={0} role="region" aria-label="Tabela de registros. Use as setas para ver todas as colunas."><table><thead><tr><th>Peça</th><th>Categoria</th><th>Tamanho e marca</th><th>Onde está</th><th>Preço</th><th>Situação</th></tr></thead><tbody>{!lista.length?<tr><td colSpan={6} className="empty">Nenhuma peça encontrada. Tente outra busca ou situação.</td></tr>:lista.map(p=><tr key={p.id}><td><strong>{p.nome}</strong><div className="note">{p.estado}</div></td><td>{obterNomeCategoria(p.categoria_id)}</td><td>{p.tamanho} · {p.marca}</td><td>{p.localizacao}</td><td>{p.preco>0?formatCurrency(p.preco):'A definir'}</td><td>{p.status==='aguardando_triagem'?<button className="text-button" onClick={()=>go('triagem')}>Aguardando avaliação →</button>:<span className={p.status==='disponivel'?'badge-status-approved':p.status==='reprovado'?'badge-status-rejected':'badge'}>{estados[p.status]||p.status}</span>}</td></tr>)}</tbody></table></div></section>
+}

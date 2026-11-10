@@ -1,0 +1,13 @@
+# Dados e modelo relacional
+
+- [DER](DER.md): nove entidades e fluxo operacional atual.
+- [Dicionário completo](dicionario-de-dados.md): todas as colunas, tipos, nulabilidade, valores padrão e chaves da migração existente.
+- [Migração SQL](../../data/database/migrations/001_init_schema.sql).
+- [Carga SQL](../../data/database/seeds/001_initial_data.sql).
+- [Modelo de classes original](../arquitetura/diagrama-classes.md): inclui conceitos ainda não implementados.
+
+O SQL existente usa sintaxe MySQL. O planejamento cita PostgreSQL e ainda precisa ser alinhado com esses arquivos. A aplicação atual salva os dados no navegador (localStorage) e não executa a migração. O DER segue as entidades definidas nos tipos e nos scripts SQL.
+
+## Como consultar
+
+Comece pelo [DER](DER.md) para conhecer as entidades e os relacionamentos. Consulte o [dicionário de dados](dicionario-de-dados.md) para os detalhes dos campos e confronte-os com a [migração](../../data/database/migrations/001_init_schema.sql) e a [carga inicial](../../data/database/seeds/001_initial_data.sql), considerando a divergência de banco descrita acima.

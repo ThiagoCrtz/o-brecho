@@ -1,0 +1,75 @@
+@base = http://localhost:8080
+@token = COLE_O_TOKEN_DO_LOGIN
+@categoriaId = COLE_O_UUID_DA_CATEGORIA
+@produtoId = COLE_O_UUID_DO_PRODUTO
+@clienteId = COLE_O_UUID_DO_CLIENTE
+@chaveVenda = COLE_UM_UUID_NOVO_PARA_ESTA_COMPRA
+
+### Login (use a senha inicial configurada no ambiente)
+POST {{base}}/api/auth/login
+Content-Type: application/json
+
+{"usuario":"administrador","senha":"SUBSTITUA_PELA_SUA_SENHA"}
+
+### Conta atual
+GET {{base}}/api/auth/me
+Authorization: Bearer {{token}}
+
+### Cadastrar Clara (perfil com permissão para aprovar)
+POST {{base}}/api/equipe
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"dados":{"nome":"Clara","usuario":"clara","perfil":"TRIAGEM","telefone":"","ativo":true},"senha":"SUBSTITUA_POR_SENHA_PROPRIA"}
+
+### Categoria
+POST {{base}}/api/categorias
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"nome":"Roupas","descricao":"Peças de vestuário"}
+
+### Receber doação
+POST {{base}}/api/doacoes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"origem":"Doador","observacao":"","pecas":[{"nome":"Camisa","descricao":"","tamanho":"M","marca":"Sem marca","estado":"BOM"}]}
+
+### Localizar o UUID da peça
+GET {{base}}/api/produtos?status=PENDENTE
+Authorization: Bearer {{token}}
+
+### Aprovar peça
+POST {{base}}/api/triagens/{{produtoId}}/aprovar
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"categoriaId":"{{categoriaId}}","preco":30.00,"localizacao":"Arara 1","observacao":"Revisada"}
+
+### Cadastrar cliente
+POST {{base}}/api/clientes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"nome":"Cliente","telefone":"11999999999","email":"","observacoes":""}
+
+### Vender com desconto (administrador ou atendente)
+POST {{base}}/api/vendas
+Authorization: Bearer {{token}}
+Idempotency-Key: {{chaveVenda}}
+Content-Type: application/json
+
+{"clienteId":"{{clienteId}}","itens":[{"produtoId":"{{produtoId}}"}],"total":25.00,"pagamento":"PIX"}
+
+### Relatório - ajuste as datas
+GET {{base}}/api/relatorios?inicio=2026-11-01&fim=2026-11-30
+Authorization: Bearer {{token}}
+
+### Histórico de cliente
+GET {{base}}/api/vendas?inicio=2026-01-01&fim=2026-12-31&clienteId={{clienteId}}
+Authorization: Bearer {{token}}
+
+### Logout
+POST {{base}}/api/auth/logout
+Authorization: Bearer {{token}}

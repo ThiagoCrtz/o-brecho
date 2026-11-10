@@ -1,0 +1,19 @@
+{
+  "data": "2026-11-02",
+  "tipo": "Auditoria documental, sem execução de regras comerciais",
+  "markdowns_conferidos": 38,
+  "links_locais_conferidos": 438,
+  "tabelas_conferidas": 52,
+  "pdfs_integros": 4,
+  "paginas_capturadas": 59,
+  "telas_extraidas_do_pdf": 13,
+  "telas_react_capturadas": 10,
+  "imagens_validas": 85,
+  "itens_backlog_csv": 13,
+  "estimativa_equipe_conferida": {
+    "horas": 230,
+    "reais": 9750
+  },
+  "problemas": [],
+  "resultado": "Aprovado"
+}

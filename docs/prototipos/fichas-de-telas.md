@@ -1,0 +1,255 @@
+# Galeria e fichas das 13 telas
+
+Primeiro protótipo web, feito em HTML, com dados de exemplo. [Documento das telas](fontes/telasANG.pdf).
+
+Os números de página abaixo indicam ordem das páginas no arquivo.
+
+| Tela | Página | Requisito / fluxo |
+|---|---:|---|
+| [Autenticação](#01-autenticacao) | 4 | RNF01 |
+| [Credenciais inválidas](#02-credenciais-invalidas) | 5 | RNF01 |
+| [Início - Administrador](#03-inicio-administrador) | 6 | Navegação / RNF04 |
+| [Produtos](#04-produtos) | 7 | RF06, RF07 / UC06, UC07 |
+| [Cadastro de produto](#05-cadastro-produto) | 8 | RF06 / UC06 |
+| [Nova venda - cliente cadastrado](#06-venda-cliente-cadastrado) | 9 | RF07 / UC07 |
+| [Nova venda - cliente avulso](#07-venda-cliente-avulso) | 10 | RF07 / UC07 |
+| [Clientes](#08-clientes) | 11 | RF01 / UC01 |
+| [Detalhe do cliente](#09-detalhe-cliente) | 12 | RF02 / UC02 |
+| [Estoque](#10-estoque) | 13 | RF06, RF07 / UC06, UC07 |
+| [Relatórios](#11-relatorios) | 14 | RF08 / UC08 |
+| [Atendentes](#12-atendentes) | 15 | RF03 / UC03 |
+| [Início - Atendente](#13-inicio-atendente) | 16 | RNF02 |
+
+<a id="01-autenticacao"></a>
+
+## Autenticação
+
+![Autenticação - captura original](imagens/01-autenticacao.png)
+
+Página 4 do PDF · RNF01
+
+**Funcionamento**
+
+Campos Usuário e Senha, botão Entrar e nota com credenciais de demonstração. Após login válido, apresenta Início.
+
+**Versão atual**
+
+Login em React, continua semelhante.
+
+[Conferir a página completa](evidencias/telas-ang/pagina-04.png).
+
+<a id="02-credenciais-invalidas"></a>
+
+## Credenciais inválidas
+
+![Credenciais inválidas - captura original](imagens/02-credenciais-invalidas.png)
+
+Página 5 do PDF · RNF01
+
+**Funcionamento**
+
+Mensagem de erro no login, permanece fora das páginas internas e permite corrigir as credenciais.
+
+**Versão atual**
+
+Em React, semelhante, apenas utilizando sua própria mensagem de erro. [Ver código do login](../../frontend/src/services/authService.ts).
+
+[Conferir a página completa](evidencias/telas-ang/pagina-05.png).
+
+<a id="03-inicio-administrador"></a>
+
+## Início - Administrador
+
+![Início - Administrador - captura original](imagens/03-inicio-administrador.png)
+
+Página 6 do PDF · Navegação / RNF04
+
+**Funcionamento**
+
+Painel com atalhos e indicadores de 128 produtos, 42 vendas, 31 clientes e receita de R$ 1.284, todos demonstrativos.
+
+**Versão atual**
+
+O sistema atual usa views/inicio/InicioView.tsx com seus próprios dados e menu, mas ainda não são números reais da ANG.
+
+[Conferir a página completa](evidencias/telas-ang/pagina-06.png).
+
+<a id="04-produtos"></a>
+
+## Produtos
+
+![Produtos - captura original](imagens/04-produtos.png)
+
+Página 7 do PDF · RF06, RF07 / UC06, UC07
+
+**Funcionamento**
+
+Busca por nome, filtro de categoria, cartões com preço e quantidade, cadastro e ação Dar baixa / vender. Esgotados ficam desabilitados.
+
+**Versão atual**
+
+O sistema atual organiza peças unitárias e seus estados em views/produtos/ProdutosView.tsx.
+
+[Conferir a página completa](evidencias/telas-ang/pagina-07.png).
+
+<a id="05-cadastro-produto"></a>
+
+## Cadastro de produto
+
+![Cadastro de produto - captura original](imagens/05-cadastro-produto.png)
+
+Página 8 do PDF · RF06 / UC06
+
+**Funcionamento**
+
+Nome, categoria, preço e quantidade inicial obrigatórios, descrição opcional, cancelar retorna ao catálogo.
+
+**Versão atual**
+
+O sistema atual acrescenta características e localização em CadastroProdutoView.tsx. Cadastro direto precisa ser alinhado com doação e aprovação.
+
+[Conferir a página completa](evidencias/telas-ang/pagina-08.png).
+
+<a id="06-venda-cliente-cadastrado"></a>
+
+## Nova venda - cliente cadastrado
+
+![Nova venda - cliente cadastrado - captura original](imagens/06-venda-cliente-cadastrado.png)
+
+Página 9 do PDF · RF07 / UC07
+
+**Funcionamento**
+
+Seleciona produtos, compõe carrinho, escolhe cliente e meio de pagamento, verifica quantidade e finaliza com baixa do estoque.
+
+**Versão atual**
+
+O sistema atual permite negociação por peça e total e emite comprovante.
+
+[Conferir a página completa](evidencias/telas-ang/pagina-09.png).
+
+<a id="07-venda-cliente-avulso"></a>
+
+## Nova venda - cliente avulso
+
+![Nova venda - cliente avulso - captura original](imagens/07-venda-cliente-avulso.png)
+
+Página 10 do PDF · RF07 / UC07
+
+**Funcionamento**
+
+No protótipo documentado, nome e número são obrigatórios e vinculados somente à venda, sem cadastro permanente automático.
+
+**Versão atual**
+
+No modelo atual, toda venda precisa estar ligada a um cliente pelo campo cliente_id. Essa é a diferença em relação ao protótipo. [Ver estrutura de Venda](../../frontend/src/models/Venda.ts).
+
+[Conferir a página completa](evidencias/telas-ang/pagina-10.png).
+
+<a id="08-clientes"></a>
+
+## Clientes
+
+![Clientes - captura original](imagens/08-clientes.png)
+
+Página 11 do PDF · RF01 / UC01
+
+**Funcionamento**
+
+Lista identificação, contato, quantidade de compras e total gasto. Selecionar uma linha abre o histórico.
+
+**Versão atual**
+
+Atualmente possui manutenção de clientes além da consulta descrita nessa versão HTML.
+
+[Conferir a página completa](evidencias/telas-ang/pagina-11.png).
+
+<a id="09-detalhe-cliente"></a>
+
+## Detalhe do cliente
+
+![Detalhe do cliente - captura original](imagens/09-detalhe-cliente.png)
+
+Página 12 do PDF · RF02 / UC02
+
+**Funcionamento**
+
+Resumo individual e últimas compras com data, produtos, pagamento e total.
+
+**Versão atual**
+
+Apresenta as vendas do cliente. Ainda falta o agrupamento por categoria previsto.
+
+[Conferir a página completa](evidencias/telas-ang/pagina-12.png).
+
+<a id="10-estoque"></a>
+
+## Estoque
+
+![Estoque - captura original](imagens/10-estoque.png)
+
+Página 13 do PDF · RF06, RF07 / UC06, UC07
+
+**Funcionamento**
+
+Tabela de produtos, categorias, quantidades e disponibilidade, estoque reduzido após a venda na sessão do protótipo.
+
+**Versão atual**
+
+Acompanha a situação de cada peça e salva os dados no navegador.
+
+[Conferir a página completa](evidencias/telas-ang/pagina-13.png).
+
+<a id="11-relatorios"></a>
+
+## Relatórios
+
+![Relatórios - captura original](imagens/11-relatorios.png)
+
+Página 14 do PDF · RF08 / UC08
+
+**Funcionamento**
+
+Indicadores estáticos, o próprio documento informa que os números não são recalculados pelo protótipo.
+
+**Versão atual**
+
+Atualmente calcula resumo local de pagamentos e peças.
+
+[Conferir a página completa](evidencias/telas-ang/pagina-14.png).
+
+<a id="12-atendentes"></a>
+
+## Atendentes
+
+![Atendentes - captura original](imagens/12-atendentes.png)
+
+Página 15 do PDF · RF03 / UC03
+
+**Funcionamento**
+
+Consulta dos dois usuários demonstrativos. O documento informa que esta versão HTML não cria, edita, bloqueia ou exclui atendentes.
+
+**Versão atual**
+
+Já permite gerenciar funcionários e atendentes localmente. A segurança no servidor ainda precisa ser implementada.
+
+[Conferir a página completa](evidencias/telas-ang/pagina-15.png).
+
+<a id="13-inicio-atendente"></a>
+
+## Início - Atendente
+
+![Início - Atendente - captura original](imagens/13-inicio-atendente.png)
+
+Página 16 do PDF · RNF02
+
+**Funcionamento**
+
+Mostra o painel sem a opção Atendentes no menu.
+
+**Versão atual**
+
+A navegação mudou, tendo mais opções e sendo visualmente superior à versão do protótipo.
+
+[Conferir a página completa](evidencias/telas-ang/pagina-16.png).
